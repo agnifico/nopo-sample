@@ -43,7 +43,7 @@ html, body {
   overflow-x: hidden;
   min-height: 100vh;
 }
-
+/* 
 body::before {
   content: "";
   position: fixed;
@@ -58,7 +58,7 @@ body::before {
     );
   pointer-events: none;
   z-index: 100;
-}
+} */
 
 body::after {
   content: "";
@@ -276,7 +276,6 @@ nav a.active::after {
   stroke: var(--line-2);
   stroke-width: 0.7;
   fill: none;
-  opacity: .5;
 }
 
 .hex-bg .hex-accent {
@@ -390,7 +389,6 @@ nav a.active::after {
   margin-bottom: 1.8rem;
   text-transform: uppercase;
   color: var(--ink);
-  font-size: 1.5rem;
 }
 
 .hero h1 .tube-r {
@@ -405,9 +403,9 @@ nav a.active::after {
   font-size: 1.05rem;
   line-height: 1.7;
   color: var(--ink-soft);
+  max-width: 32rem;
   margin-bottom: 2.2rem;
   font-weight: 400;
-  backdrop-filter: blur(2px);
 }
 
 .hero .lede strong {
@@ -461,7 +459,7 @@ nav a.active::after {
 }
 
 .cta.ghost {
-  background: hsla(0, 0%, 0%, 0.75);
+  background: transparent;
   border: 1px solid var(--green-bright);
   color: var(--green-bright);
   box-shadow: none;
@@ -717,18 +715,68 @@ nav a.active::after {
 
 .app-cell {
   background: rgba(17, 22, 19, 0.75);
-  padding: 2rem;
-  min-height: 220px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  min-height: 240px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 0;
   position: relative;
   transition: background 0.3s ease, transform 0.3s ease;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .app-cell:hover {
   background: rgba(28, 38, 32, 0.9);
+}
+
+.app-cell:hover .app-cell-img img {
+  /* transform: scale(1.04); */
+  filter: contrast(1) brightness(1.2);
+}
+
+.app-cell-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+
+.app-cell-img {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+  border-left: 1px solid var(--line-2);
+}
+
+.app-cell-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* filter: grayscale(30%) contrast(1.05) brightness(0.85); */
+  filter: grayscale(.8);
+  transition: transform 0.5s ease, filter 0.4s ease;
+}
+
+.app-cell-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to left, transparent 0%, rgba(10, 13, 12, 0.45) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Sixth cell has no image — fill with hex motif placeholder */
+.app-cell.no-image {
+  grid-template-columns: 1fr;
+}
+
+.app-cell.no-image .app-cell-content {
+  padding: 2rem;
 }
 
 .app-cell .num {
@@ -763,10 +811,102 @@ nav a.active::after {
   height: 7px;
   background: var(--green-bright);
   box-shadow: 0 0 8px var(--green-glow);
+  z-index: 3;
 }
 
 .app-cell:nth-child(2) .marker { background: var(--orange); box-shadow: 0 0 8px var(--orange-glow); }
 .app-cell:nth-child(5) .marker { background: var(--amber); box-shadow: 0 0 8px rgba(255, 194, 102, 0.5); }
+
+/* ============ THIN BANNER ============ */
+.thin-banner {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  margin: 0;
+  border-top: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line-2);
+}
+
+.thin-banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* filter: contrast(1.05) brightness(0.75) saturate(0.85); */
+}
+
+.thin-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, var(--bg) 0%, transparent 18%, transparent 82%, var(--bg) 100%),
+    linear-gradient(to bottom, rgba(10, 13, 12, 0.45) 0%, transparent 30%, transparent 70%, rgba(10, 13, 12, 0.45) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* .thin-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 3px,
+      rgba(245, 243, 236, 0.025) 3px,
+      rgba(245, 243, 236, 0.025) 4px
+    );
+  pointer-events: none;
+  z-index: 2;
+} */
+
+.thin-banner-caption {
+  position: absolute;
+  left: 2.5rem;
+  bottom: 1.4rem;
+  z-index: 3;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-weight: 500;
+}
+
+.thin-banner-caption::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--orange);
+  box-shadow: 0 0 6px var(--orange-glow);
+}
+
+.thin-banner-caption .dim {
+  color: var(--ink-mute);
+}
+
+.thin-banner-tag {
+  position: absolute;
+  right: 2.5rem;
+  bottom: 1.4rem;
+  z-index: 3;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--ink-dim);
+  font-weight: 500;
+}
+
+.thin-banner-tag .accent { color: var(--green-bright); }
 
 /* ============ CTA BANNER ============ */
 .cta-banner {
@@ -1019,6 +1159,8 @@ nav a.active::after {
 @media (max-width: 900px) {
   .hero-grid, .hipco-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .app-grid, .sustain-grid { grid-template-columns: 1fr; }
+  .app-cell { grid-template-columns: 1fr; min-height: 0; }
+  .app-cell-img { height: 160px; border-left: none; border-top: 1px solid var(--line-2); }
   .footer-inner { grid-template-columns: 1fr; }
   header { padding: 1rem 1.5rem; }
   .header-readout { display: none; }
@@ -1026,6 +1168,9 @@ nav a.active::after {
   .hero { padding: 6rem 1.5rem 4rem; }
   .hipco-section, .section-two, .sustain-section { padding: 4rem 1.5rem; }
   .cta-banner { padding: 0 1.5rem; }
+  .thin-banner { height: 130px; }
+  .thin-banner-caption, .thin-banner-tag { left: 1.5rem; right: 1.5rem; }
+  .thin-banner-tag { left: auto; }
 }
 </style>
 </head>
@@ -1071,7 +1216,7 @@ nav a.active::after {
   </nav>
   <div class="header-readout">
     <span class="live">SYS ONLINE</span>
-    <span>HiPCO ∙ v8.2</span>
+    <span>EST. 2011 ∙ BLR</span>
   </div>
 </header>
 
@@ -1087,7 +1232,7 @@ nav a.active::after {
   <div class="hero-grid">
     <div>
       <div class="section-label"><span class="idx">[ 01 ]</span> NoPo Nanotechnologies</div>
-      <h1>Specialised in small-diameter single-walled carbon nanotubes.</h1>
+      <h1>Specialises in small-diameter single-walled carbon nanotubes.</h1>
       <p class="lede">
         SWCNTs for applications ranging from <strong>electronics, sensors, semiconductors, EV batteries, medical, filtration</strong> and others. One of the few players <em>globally</em> to produce small-diameter <strong>0.8&ndash;1 nm</strong> nanotubes at scale, we work closely with our industry partners to develop suitable applications leveraging the many advantages of nanotubes.
       </p>
@@ -1100,7 +1245,7 @@ nav a.active::after {
     <div class="readout-panel">
       <div class="readout-header">
         <span class="id">SWCNT / HiPCO<sup style="font-size:0.65em;">®</sup></span>
-        <span>UNIT 5Z06</span>
+        <span>REACTOR ∙ EST. 2014</span>
       </div>
       <div class="spec-row">
         <span class="key">Diameter</span>
@@ -1130,7 +1275,7 @@ nav a.active::after {
   </div>
 
   <div class="bottom-bar">
-    <span>NoPo Nanotechnologies ∙ bengaluru, india</span>
+    <span>NoPo Nanotechnologies ∙ Now Possible</span>
     <div class="scroll-indicator">
       <span>Scroll</span>
       <span class="line"></span>
@@ -1138,6 +1283,17 @@ nav a.active::after {
     </div>
   </div>
 </section>
+
+<!-- ===== THIN BANNER ===== -->
+<div class="thin-banner">
+  <img src="thin-top-banner.jpg" alt="Single-walled carbon nanotube" />
+  <div class="thin-banner-caption">
+    Single-walled carbon nanotube <span class="dim">∙ What We Do</span>
+  </div>
+  <div class="thin-banner-tag">
+    Ø <span class="accent">0.8 &ndash; 1.0 nm</span>
+  </div>
+</div>
 
 <!-- ===== HiPCO IN YOUR WORLD ===== -->
 <section class="hipco-section">
@@ -1173,64 +1329,88 @@ nav a.active::after {
 
   <div class="app-grid">
     <div class="app-cell">
-      <div>
+      <div class="app-cell-content">
         <div class="num">01</div>
-        <span class="marker"></span>
+        <div>
+          <h3>EV Batteries</h3>
+          <p>SWCNT electrodes for high energy density storage. Replaces 10 wt% carbon black with 0.5 wt% HiPCO.</p>
+        </div>
       </div>
-      <div>
-        <h3>EV Batteries</h3>
-        <p>SWCNT electrodes for high energy density storage. Replaces 10 wt% carbon black with 0.5 wt% HiPCO.</p>
+      <div class="app-cell-img">
+        <img src="ev.jpg" alt="EV Batteries" loading="lazy" />
       </div>
+      <span class="marker"></span>
     </div>
+
     <div class="app-cell">
-      <div>
+      <div class="app-cell-content">
         <div class="num">02</div>
-        <span class="marker"></span>
+        <div>
+          <h3>Electronics</h3>
+          <p>High electron mobility &amp; conductivity. Single-chiral CNT lets you control bandgap.</p>
+        </div>
       </div>
-      <div>
-        <h3>Electronics</h3>
-        <p>High electron mobility &amp; conductivity. Single-chiral CNT lets you control bandgap.</p>
+      <div class="app-cell-img">
+        <img src="electronics.jpg" alt="Electronics" loading="lazy" />
       </div>
+      <span class="marker"></span>
     </div>
+
     <div class="app-cell">
-      <div>
+      <div class="app-cell-content">
         <div class="num">03</div>
-        <span class="marker"></span>
+        <div>
+          <h3>Water Filtration</h3>
+          <p>SWCNT membranes for desalination — water transport up to 100× faster than known pores.</p>
+        </div>
       </div>
-      <div>
-        <h3>Water Filtration</h3>
-        <p>SWCNT membranes for desalination — water transport up to 100× faster than known pores.</p>
+      <div class="app-cell-img">
+        <img src="water-membrane.jpg" alt="Water Membrane" loading="lazy" />
       </div>
+      <span class="marker"></span>
     </div>
+
     <div class="app-cell">
-      <div>
+      <div class="app-cell-content">
         <div class="num">04</div>
-        <span class="marker"></span>
+        <div>
+          <h3>Aviation</h3>
+          <p>Lighter aircraft, satellites and vehicles. EMI shielding, stealth, lightning-strike protection.</p>
+        </div>
       </div>
-      <div>
-        <h3>Aviation</h3>
-        <p>Lighter aircraft, satellites and vehicles. EMI shielding, stealth, lightning-strike protection.</p>
+      <div class="app-cell-img">
+        <img src="aviation.jpg" alt="Aviation" loading="lazy" />
       </div>
+      <span class="marker"></span>
     </div>
+
     <div class="app-cell">
-      <div>
+      <div class="app-cell-content">
         <div class="num">05</div>
-        <span class="marker"></span>
+        <div>
+          <h3>Medicine</h3>
+          <p>High-purity SWCNT &gt;99% catalyst-free, suitable for healthcare and biomedical applications.</p>
+        </div>
       </div>
-      <div>
-        <h3>Medicine</h3>
-        <p>High-purity SWCNT &gt;99% catalyst-free, suitable for healthcare and biomedical applications.</p>
+      <div class="app-cell-img">
+        <img src="medicine.jpg" alt="Medicine" loading="lazy" />
       </div>
+      <span class="marker"></span>
     </div>
+
+    <!-- <div class="app-cell no-image"> -->
     <div class="app-cell">
-      <div>
+      <div class="app-cell-content">
         <div class="num">06</div>
-        <span class="marker"></span>
+        <div>
+          <h3>Composites &amp; Coatings</h3>
+          <p>Antistatic master batches, conductive paints, polymers, elastomers, fibres, textiles.</p>
+        </div>
       </div>
-      <div>
-        <h3>Composites &amp; Coatings</h3>
-        <p>Antistatic master batches, conductive paints, polymers, elastomers, fibres, textiles.</p>
+      <div class="app-cell-img">
+        <img src="conductive-paint.jpg" alt="Medicine" loading="lazy" />
       </div>
+      <span class="marker"></span>
     </div>
   </div>
 </section>
@@ -1295,12 +1475,12 @@ nav a.active::after {
     </div>
 
     <div class="footer-block">
-      <h4>System</h4>
+      <h4>At a Glance</h4>
       <p style="font-family: var(--mono); font-size: 0.78rem; line-height: 2;">
         <span style="color:var(--green-bright);">●</span> SYS ONLINE<br/>
-        HiPCO® v8.2<br/>
-        UNIT 5Z06<br/>
-        BLR ∙ 12.97° N
+        EST. 2011 ∙ BENGALURU<br/>
+        HiPCO® REACTOR ∙ 2014<br/>
+        ELECTRONIC CITY ∙ 12.84° N
       </p>
     </div>
   </div>
